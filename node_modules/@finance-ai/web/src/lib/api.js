@@ -1,8 +1,11 @@
 import axios from 'axios';
 
-// Create an Axios instance configured to talk to our local backend API
+// Create an Axios instance configured to talk to our backend API
+// During Vercel deployment, the API will be available at the same domain under /api
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+
 const api = axios.create({
-    baseURL: 'http://localhost:4000/api',
+    baseURL,
     // very important: withCredentials sends Better Auth cookies automatically
     withCredentials: true, 
 });

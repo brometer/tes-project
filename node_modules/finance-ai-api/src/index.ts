@@ -46,6 +46,12 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
     });
 });
 
-app.listen(port, () => {
-    console.log(`Finance AI Backend running on port ${port}`);
-});
+// If not running in a Vercel Serverless environment, start the server locally
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    app.listen(port, () => {
+        console.log(`Finance AI Backend running on port ${port}`);
+    });
+}
+
+// Export the app for Vercel serverless functions
+export default app;

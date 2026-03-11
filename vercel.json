@@ -1,12 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "cd apps/web && npm install && npm run build",
-  "outputDirectory": "apps/web/dist",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/apps/api/src/index.ts"
-    },
     {
       "source": "/(.*)",
       "destination": "/index.html"

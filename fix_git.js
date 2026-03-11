@@ -1,41 +1,28 @@
-/**
- * Fix script to resolve git submodule and node_modules issues.
- * Run this from the root of the finance-ai project.
- */
 const { execSync } = require('child_process');
 
 function run(cmd) {
-  console.log(`\n> ${cmd}`);
+  console.log(`> ${cmd}`);
   try {
-    const output = execSync(cmd, { encoding: 'utf-8', stdio: 'pipe' });
-    if (output.trim()) console.log(output.trim());
-    return true;
+    const out = execSync(cmd, { encoding: 'utf-8', stdio: 'pipe' });
+    if (out.trim()) console.log(out.trim());
   } catch (err) {
-    console.log('  (Warning):', err.stderr?.trim() || err.message);
-    return false;
+    console.log('  Warning:', err.stderr?.trim() || err.message);
   }
 }
 
-console.log('=== Step 1: Remove node_modules from git cache ===');
-run('git rm -r --cached node_modules');
+console.log('=== Removing apps/web/node_modules from git ===');
+run('git rm -r --cached apps/web/node_modules');
 
-console.log('\n=== Step 2: Remove apps/web submodule gitlink ===');
-run('git rm --cached apps/web');
-
-console.log('\n=== Step 3: Remove temp files from git cache ===');
-run('git rm --cached test.js');
+console.log('\n=== Removing temp scripts ===');
+run('git rm --cached fix_git.js');
 run('git rm --cached check_git.js');
+run('git rm --cached test.js');
 
-console.log('\n=== Step 4: Add apps/web/ as normal files (trailing slash!) ===');
-run('git add apps/web/');
-
-console.log('\n=== Step 5: Add all remaining changes ===');
+console.log('\n=== Staging all changes ===');
 run('git add .');
 
-console.log('\n=== Step 6: Commit ===');
-run('git commit -m "fix: properly add apps/web files and remove node_modules from tracking"');
-
-console.log('\n=== Step 7: Push ===');
+console.log('\n=== Commit & Push ===');
+run('git commit -m "fix: remove web node_modules from git tracking"');
 run('git push origin master');
 
-console.log('\n=== DONE! Check Vercel for the new deployment. ===');
+console.log('\nDone! Vercel will redeploy.');

@@ -2,11 +2,13 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from './schema';
 
-// In Vercel, env vars are injected automatically. Locally, load from .env file.
-if (!process.env.VERCEL) {
-    const dotenv = await import('dotenv');
-    const path = await import('path');
-    dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+// Only load dotenv locally, Vercel injects env vars automatically
+try {
+    if (!process.env.VERCEL) {
+        require('dotenv').config({ path: require('path').resolve(process.cwd(), '.env') });
+    }
+} catch (e) {
+    // dotenv not available in Vercel serverless, that's fine
 }
 
 const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:postgrespassword@localhost:5432/finance_ai';

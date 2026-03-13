@@ -1,10 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
-import path from 'path';
 
-// Load environment variables
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+// Load environment variables (only needed locally, Vercel injects them automatically)
+try {
+    if (!process.env.VERCEL) {
+        require('dotenv').config({ path: require('path').resolve(process.cwd(), '.env') });
+    }
+} catch (e) {}
 
 import authRoutes from './routes/auth.routes';
 import bankAccountRoutes from './routes/bank-accounts.routes';
